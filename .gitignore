@@ -1,0 +1,7 @@
+.venv/
+Home/.venv/
+Home/.tmp/
+__pycache__/
+*.py[cod]
+db.sqlite3
+Home/db.sqlite3
