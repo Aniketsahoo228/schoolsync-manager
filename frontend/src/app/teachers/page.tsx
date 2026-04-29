@@ -1,121 +1,97 @@
-'use client';
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import PageHeader from "@/components/layout/PageHeader";
+import Link from "next/link";
+import { Plus, Eye, Edit, Trash2, Search } from "lucide-react";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import RoomTable from '@/components/hostel/RoomTable';
-import { mockRooms } from '@/lib/data/hostel';
+const teachers = [
+  { id: "TCH-001", name: "Mrs. Anita Verma", subject: "English", class: "KG-1", qualification: "M.Ed", experience: "8 yrs", mobile: "9876500001", email: "anita@preskool.in", status: "Active" },
+  { id: "TCH-002", name: "Mr. Rajesh Mohan", subject: "Maths", class: "KG-2", qualification: "B.Ed", experience: "5 yrs", mobile: "9876500002", email: "rajesh@preskool.in", status: "Active" },
+  { id: "TCH-003", name: "Ms. Kavitha Rao", subject: "Science", class: "Nursery", qualification: "M.Sc,B.Ed", experience: "3 yrs", mobile: "9876500003", email: "kavitha@preskool.in", status: "Active" },
+  { id: "TCH-004", name: "Mr. Suresh Bhat", subject: "Arts", class: "KG-1", qualification: "BFA", experience: "6 yrs", mobile: "9876500004", email: "suresh@preskool.in", status: "Inactive" },
+  { id: "TCH-005", name: "Ms. Deepika Singh", subject: "Music", class: "All", qualification: "Diploma", experience: "4 yrs", mobile: "9876500005", email: "deepika@preskool.in", status: "Active" },
+];
 
-export default function HostelPage() {
-  const [rooms, setRooms] = useState(mockRooms);
-
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this room?')) {
-      setRooms((prev) => prev.filter((r) => r.id !== id));
-    }
-  };
-
-  const available = rooms.filter((r) => r.availability === 'Available').length;
-  const full      = rooms.filter((r) => r.availability === 'Full').length;
-  const totalBeds = rooms.reduce((sum, r) => sum + r.noOfBeds, 0);
-
+export default function TeachersPage() {
   return (
-    <div className="p-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800">Hostel</h3>
-          <nav className="flex items-center gap-2 text-sm mt-1">
-            <Link href="/" className="text-orange-500 hover:underline">Dashboard</Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-500">Hostel</span>
-          </nav>
-        </div>
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 border border-orange-400 text-orange-500 hover:bg-orange-50 text-sm font-medium px-4 py-2 rounded-lg transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Download
-          </button>
-          <Link
-            href="/hostel/add"
-            className="flex items-center justify-center w-9 h-9 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
-            title="Add Room"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-            </svg>
+    <DashboardLayout>
+      <PageHeader
+        title="Teachers"
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Teachers" }]}
+        action={
+          <Link href="/teachers/add" className="btn btn-primary">
+            <Plus size={16} />
+            Add Teacher
           </Link>
+        }
+      />
+
+      <div className="card">
+        <div className="card-header" style={{ flexWrap: "wrap", gap: "0.75rem" }}>
+          <div className="relative" style={{ flex: 1, minWidth: 200, maxWidth: 300 }}>
+            <Search size={15} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#9ca3af" }} />
+            <input type="text" placeholder="Search teachers..." className="form-control" style={{ paddingLeft: "2.25rem", height: 38 }} />
+          </div>
+          <select className="form-control" style={{ height: 38, width: "auto" }}>
+            <option>All Classes</option>
+            <option>Nursery</option>
+            <option>KG-1</option>
+            <option>KG-2</option>
+          </select>
+        </div>
+
+        <div style={{ overflow: "auto" }}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Teacher</th>
+                <th>Teacher ID</th>
+                <th>Subject</th>
+                <th>Class</th>
+                <th>Qualification</th>
+                <th>Experience</th>
+                <th>Mobile</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teachers.map((t, i) => (
+                <tr key={t.id}>
+                  <td style={{ color: "var(--text-muted)" }}>{i + 1}</td>
+                  <td>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+                      <div className="avatar" style={{ background: "#fef3c7", color: "#f59e0b" }}>{t.name[4]}</div>
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{t.name}</div>
+                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>{t.email}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span style={{ fontWeight: 600, color: "var(--primary)" }}>{t.id}</span></td>
+                  <td>{t.subject}</td>
+                  <td>{t.class}</td>
+                  <td>{t.qualification}</td>
+                  <td>{t.experience}</td>
+                  <td style={{ color: "var(--text-muted)" }}>{t.mobile}</td>
+                  <td>
+                    <span className="badge" style={{ background: t.status === "Active" ? "#ecfdf5" : "#fef2f2", color: t.status === "Active" ? "#10b981" : "#ef4444" }}>
+                      {t.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div style={{ display: "flex", gap: "0.375rem" }}>
+                      <Link href="/teachers/view" className="btn btn-success" style={{ padding: "0.3rem 0.6rem" }}><Eye size={13} /></Link>
+                      <Link href="/teachers/edit" className="btn btn-secondary" style={{ padding: "0.3rem 0.6rem" }}><Edit size={13} /></Link>
+                      <button className="btn btn-danger" style={{ padding: "0.3rem 0.6rem" }}><Trash2 size={13} /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <StatCard
-          label="Total Rooms"
-          value={rooms.length}
-          sub={`${totalBeds} beds total`}
-          color="orange"
-          icon={
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          }
-        />
-        <StatCard
-          label="Available"
-          value={available}
-          sub="rooms open"
-          color="green"
-          icon={
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
-        />
-        <StatCard
-          label="Full"
-          value={full}
-          sub="rooms occupied"
-          color="red"
-          icon={
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
-        />
-      </div>
-
-      {/* Table */}
-      <RoomTable rooms={rooms} onDelete={handleDelete} />
-    </div>
-  );
-}
-
-interface StatCardProps {
-  label: string;
-  value: number;
-  sub: string;
-  color: 'orange' | 'green' | 'red';
-  icon: React.ReactNode;
-}
-
-function StatCard({ label, value, sub, color, icon }: StatCardProps) {
-  const styles = {
-    orange: { card: 'border-orange-100', icon: 'bg-orange-100 text-orange-500', text: 'text-orange-600' },
-    green:  { card: 'border-green-100',  icon: 'bg-green-100  text-green-600',  text: 'text-green-600'  },
-    red:    { card: 'border-red-100',    icon: 'bg-red-100    text-red-500',    text: 'text-red-500'    },
-  };
-  const s = styles[color];
-
-  return (
-    <div className={`bg-white border ${s.card} rounded-lg p-4 flex items-center gap-4`}>
-      <div className={`${s.icon} rounded-xl p-3 flex-shrink-0`}>{icon}</div>
-      <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className={`text-2xl font-bold ${s.text}`}>{value}</p>
-        <p className="text-xs text-gray-400 mt-0.5">{sub}</p>
-      </div>
-    </div>
+    </DashboardLayout>
   );
 }
