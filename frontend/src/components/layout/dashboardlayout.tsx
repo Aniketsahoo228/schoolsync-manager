@@ -1,17 +1,13 @@
-import Header from './header';
-import Sidebar from './sidebar';
+import Sidebar from "./sidebar";
+import Header from "./header";
 
-export default function DashboardLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       <Sidebar />
-      <div className="min-h-screen md:pl-64">
-        <Header />
-        <main>{children}</main>
+      <Header />
+      <div className="page-wrapper">
+        <div className="page-content">{children}</div>
       </div>
     </div>
   );

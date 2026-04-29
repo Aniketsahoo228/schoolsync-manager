@@ -1,33 +1,33 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
 
-type Breadcrumb = {
+interface Crumb {
   label: string;
   href?: string;
-};
+}
 
-type PageHeaderProps = {
+interface PageHeaderProps {
   title: string;
-  breadcrumbs?: Breadcrumb[];
-  action?: ReactNode;
-};
+  breadcrumbs: Crumb[];
+  action?: React.ReactNode;
+}
 
-export default function PageHeader({ title, breadcrumbs = [], action }: PageHeaderProps) {
+export default function PageHeader({ title, breadcrumbs, action }: PageHeaderProps) {
   return (
     <div className="page-header">
       <div>
-        <h1>{title}</h1>
-        {breadcrumbs.length > 0 && (
-          <div className="breadcrumbs">
-            {breadcrumbs.map((item, index) => (
-              <span key={`${item.label}-${index}`}>
-                {item.href ? <Link href={item.href}>{item.label}</Link> : item.label}
-              </span>
-            ))}
-          </div>
-        )}
+        <h1 className="page-title">{title}</h1>
+        <ul className="breadcrumb">
+          {breadcrumbs.map((crumb, i) => (
+            <li
+              key={i}
+              className={`breadcrumb-item ${i === breadcrumbs.length - 1 ? "active" : ""}`}
+            >
+              {crumb.href ? <Link href={crumb.href}>{crumb.label}</Link> : crumb.label}
+            </li>
+          ))}
+        </ul>
       </div>
-      {action}
+      {action && <div>{action}</div>}
     </div>
   );
 }
