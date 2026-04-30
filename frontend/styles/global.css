@@ -25,7 +25,7 @@
 
 body {
   background-color: var(--body-bg);
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-nunito), sans-serif;
   color: var(--text-primary);
 }
 

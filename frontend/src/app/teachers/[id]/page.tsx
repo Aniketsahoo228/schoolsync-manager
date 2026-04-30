@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import PageHeader from "@/components/layout/PageHeader";
 import Link from "next/link";
-import { Edit, Mail, Phone, MapPin, BookOpen, Calendar, Award } from "lucide-react";
+import { Edit, Mail, Phone, BookOpen, Award } from "lucide-react";
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (

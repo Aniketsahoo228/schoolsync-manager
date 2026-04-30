@@ -1,4 +1,3 @@
-import DashboardLayout from "@/components/layout/DashboardLayout";
 import PageHeader from "@/components/layout/PageHeader";
 import { BookOpen, CalendarDays, Users } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +10,7 @@ const stats = [
 
 export default function TeacherDashboardPage() {
   return (
-    <DashboardLayout>
+    <>
       <PageHeader
         title="Teacher Dashboard"
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Teacher Dashboard" }]}
@@ -41,6 +40,6 @@ export default function TeacherDashboardPage() {
           <Link href="/timetable" className="btn btn-secondary">Timetable</Link>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }
