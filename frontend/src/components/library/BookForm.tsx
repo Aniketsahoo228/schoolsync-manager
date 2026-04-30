@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Book, LANGUAGES, BOOK_TYPES, CLASSES } from '@/lib/data/library';
+import { Book, BOOK_CATEGORIES, type BookCategory, type BookStatus } from '@/lib/data/library';
 
 interface BookFormProps {
   initialData?: Partial<Book>;
@@ -11,12 +11,16 @@ interface BookFormProps {
 
 const EMPTY: Partial<Book> = {
   id: '',
-  name: '',
-  language: 'English',
-  department: '',
-  class: '',
-  type: 'Book',
-  status: 'In Stock',
+  title: '',
+  author: '',
+  isbn: '',
+  category: 'Picture Book',
+  publisher: '',
+  publishedYear: new Date().getFullYear(),
+  quantity: 1,
+  available: 1,
+  status: 'Available',
+  description: '',
 };
 
 export default function BookForm({ initialData, mode }: BookFormProps) {
@@ -25,7 +29,7 @@ export default function BookForm({ initialData, mode }: BookFormProps) {
   const [loading, setLoading] = useState(false);
 
   const set = (field: keyof Book) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,73 +69,103 @@ export default function BookForm({ initialData, mode }: BookFormProps) {
           <label className="text-sm font-medium text-gray-600">Book Name</label>
           <input
             type="text"
-            value={form.name ?? ''}
-            onChange={set('name')}
-            placeholder="e.g. Acoustics"
+            value={form.title ?? ''}
+            onChange={set('title')}
+            placeholder="e.g. The Very Hungry Caterpillar"
             className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             required
           />
         </div>
 
-        {/* Language */}
+        {/* Author */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-600">Language</label>
-          <select
-            value={form.language ?? ''}
-            onChange={set('language')}
-            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
-            required
-          >
-            <option value="">Select Language</option>
-            {LANGUAGES.map((l) => (
-              <option key={l} value={l}>{l}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Department */}
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-600">Department</label>
+          <label className="text-sm font-medium text-gray-600">Author</label>
           <input
             type="text"
-            value={form.department ?? ''}
-            onChange={set('department')}
-            placeholder="e.g. Science"
+            value={form.author ?? ''}
+            onChange={set('author')}
+            placeholder="e.g. Eric Carle"
             className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             required
           />
         </div>
 
-        {/* Class */}
+        {/* ISBN */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-600">Class</label>
+          <label className="text-sm font-medium text-gray-600">ISBN</label>
+          <input
+            type="text"
+            value={form.isbn ?? ''}
+            onChange={set('isbn')}
+            placeholder="e.g. 978-0-399-22690-6"
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            required
+          />
+        </div>
+
+        {/* Category */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-gray-600">Category</label>
           <select
-            value={form.class ?? ''}
-            onChange={set('class')}
+            value={form.category ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value as BookCategory }))}
             className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             required
           >
-            <option value="">Select Class</option>
-            {CLASSES.map((c) => (
+            <option value="">Select Category</option>
+            {BOOK_CATEGORIES.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
         </div>
 
-        {/* Type */}
+        {/* Publisher */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-gray-600">Type</label>
-          <select
-            value={form.type ?? ''}
-            onChange={set('type')}
-            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+          <label className="text-sm font-medium text-gray-600">Publisher</label>
+          <input
+            type="text"
+            value={form.publisher ?? ''}
+            onChange={set('publisher')}
+            placeholder="e.g. Philomel Books"
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             required
-          >
-            <option value="">Select Type</option>
-            {BOOK_TYPES.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+          />
+        </div>
+
+        {/* Published Year */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-gray-600">Published Year</label>
+          <input
+            type="number"
+            value={form.publishedYear ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, publishedYear: Number(e.target.value) }))}
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            required
+          />
+        </div>
+
+        {/* Quantity */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-gray-600">Quantity</label>
+          <input
+            type="number"
+            value={form.quantity ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, quantity: Number(e.target.value) }))}
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            required
+          />
+        </div>
+
+        {/* Available */}
+        <div className="flex flex-col gap-1.5">
+          <label className="text-sm font-medium text-gray-600">Available</label>
+          <input
+            type="number"
+            value={form.available ?? ''}
+            onChange={(e) => setForm((prev) => ({ ...prev, available: Number(e.target.value) }))}
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            required
+          />
         </div>
 
         {/* Status */}
@@ -139,14 +173,25 @@ export default function BookForm({ initialData, mode }: BookFormProps) {
           <label className="text-sm font-medium text-gray-600">Status</label>
           <select
             value={form.status ?? ''}
-            onChange={set('status')}
+            onChange={(e) => setForm((prev) => ({ ...prev, status: e.target.value as BookStatus }))}
             className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
             required
           >
             <option value="">Select Status</option>
-            <option value="In Stock">In Stock</option>
+            <option value="Available">Available</option>
             <option value="Out of Stock">Out of Stock</option>
           </select>
+        </div>
+
+        {/* Description */}
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label className="text-sm font-medium text-gray-600">Description</label>
+          <textarea
+            value={form.description ?? ''}
+            onChange={set('description')}
+            className="border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            rows={3}
+          />
         </div>
       </div>
 

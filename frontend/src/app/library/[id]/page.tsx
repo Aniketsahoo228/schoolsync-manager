@@ -10,7 +10,7 @@ export default function BookDetailPage({ params }: Props) {
   const book = mockBooks.find((b) => b.id === params.id);
   if (!book) notFound();
 
-  const isInStock = book.status === 'In Stock';
+  const isInStock = book.status === 'Available';
 
   return (
     <div className="p-6">
@@ -21,7 +21,7 @@ export default function BookDetailPage({ params }: Props) {
           <nav className="flex items-center gap-2 text-sm mt-1">
             <Link href="/library" className="text-orange-500 hover:underline">Library</Link>
             <span className="text-gray-400">/</span>
-            <span className="text-gray-500">{book.name}</span>
+            <span className="text-gray-500">{book.title}</span>
           </nav>
         </div>
         <Link
@@ -45,7 +45,7 @@ export default function BookDetailPage({ params }: Props) {
             </svg>
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">{book.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{book.title}</h2>
             <p className="text-gray-400 text-sm mt-1">{book.id}</p>
             <span className={`inline-flex items-center mt-2 px-3 py-1 rounded-full text-xs font-medium ${
               isInStock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
@@ -57,10 +57,13 @@ export default function BookDetailPage({ params }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <DetailRow label="Book ID"    value={book.id} />
-          <DetailRow label="Language"   value={book.language} />
-          <DetailRow label="Department" value={book.department} />
-          <DetailRow label="Class"      value={`Class ${book.class}`} />
-          <DetailRow label="Type"       value={book.type} />
+          <DetailRow label="Author"     value={book.author} />
+          <DetailRow label="ISBN"       value={book.isbn} />
+          <DetailRow label="Category"   value={book.category} />
+          <DetailRow label="Publisher"  value={book.publisher} />
+          <DetailRow label="Year"       value={String(book.publishedYear)} />
+          <DetailRow label="Quantity"   value={String(book.quantity)} />
+          <DetailRow label="Available"  value={String(book.available)} />
           <DetailRow label="Status"     value={book.status} />
         </div>
       </div>

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, GraduationCap, BookOpen, Users, Building2,
   DollarSign, CalendarDays, ClipboardList, Calendar, Table,
-  Library, Bus, Home, Trophy, BookMarked, ChevronDown, ChevronRight
+  Library, Bus, Home, Trophy, ChevronDown, ChevronRight
 } from "lucide-react";
 import { useState } from "react";
 
@@ -90,7 +90,6 @@ const otherItems: NavItem[] = [
   { label: "Sports", href: "/sports", icon: <Trophy size={16} /> },
   { label: "Hostel", href: "/hostel", icon: <Home size={16} /> },
   { label: "Transport", href: "/transport", icon: <Bus size={16} /> },
-  { label: "Books", href: "/books", icon: <BookMarked size={16} /> },
 ];
 
 function NavGroup({ item }: { item: NavItem }) {

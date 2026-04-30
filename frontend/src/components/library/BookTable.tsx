@@ -13,7 +13,7 @@ export default function BookTable({ books, onDelete }: BookTableProps) {
   const [search, setSearch] = useState('');
 
   const filtered = books.filter((b) =>
-    [b.name, b.id, b.department, b.language].some((f) =>
+    [b.title, b.id, b.author, b.category].some((f) =>
       f.toLowerCase().includes(search.toLowerCase())
     )
   );
@@ -38,11 +38,11 @@ export default function BookTable({ books, onDelete }: BookTableProps) {
           <thead>
             <tr className="bg-gray-50 text-left text-gray-500 text-xs uppercase tracking-wide">
               <th className="px-6 py-3 font-medium">ID</th>
-              <th className="px-6 py-3 font-medium">Name</th>
-              <th className="px-6 py-3 font-medium">Language</th>
-              <th className="px-6 py-3 font-medium">Department</th>
-              <th className="px-6 py-3 font-medium">Class</th>
-              <th className="px-6 py-3 font-medium">Type</th>
+              <th className="px-6 py-3 font-medium">Title</th>
+              <th className="px-6 py-3 font-medium">Author</th>
+              <th className="px-6 py-3 font-medium">Category</th>
+              <th className="px-6 py-3 font-medium">Publisher</th>
+              <th className="px-6 py-3 font-medium">Available</th>
               <th className="px-6 py-3 font-medium">Status</th>
               <th className="px-6 py-3 font-medium text-right">Action</th>
             </tr>
@@ -63,13 +63,13 @@ export default function BookTable({ books, onDelete }: BookTableProps) {
                       href={`/library/${book.id}`}
                       className="font-medium text-gray-800 hover:text-orange-500 transition-colors"
                     >
-                      {book.name}
+                      {book.title}
                     </Link>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{book.language}</td>
-                  <td className="px-6 py-4 text-gray-600">{book.department}</td>
-                  <td className="px-6 py-4 text-gray-600">{book.class}</td>
-                  <td className="px-6 py-4 text-gray-600">{book.type}</td>
+                  <td className="px-6 py-4 text-gray-600">{book.author}</td>
+                  <td className="px-6 py-4 text-gray-600">{book.category}</td>
+                  <td className="px-6 py-4 text-gray-600">{book.publisher}</td>
+                  <td className="px-6 py-4 text-gray-600">{book.available}/{book.quantity}</td>
                   <td className="px-6 py-4">
                     <StatusBadge status={book.status} />
                   </td>
@@ -106,7 +106,7 @@ export default function BookTable({ books, onDelete }: BookTableProps) {
 }
 
 function StatusBadge({ status }: { status: Book['status'] }) {
-  const isInStock = status === 'In Stock';
+  const isInStock = status === 'Available';
   return (
     <span
       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
