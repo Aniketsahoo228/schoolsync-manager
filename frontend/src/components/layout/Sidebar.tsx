@@ -22,7 +22,7 @@ const navItems: NavItem[] = [
     label: "Dashboard",
     icon: <LayoutDashboard size={16} />,
     children: [
-      { label: "Admin Dashboard", href: "/" },
+      { label: "Admin Dashboard", href: "/dashboard" },
       { label: "Teacher Dashboard", href: "/dashboard/teacher" },
       { label: "Student Dashboard", href: "/dashboard/student" },
     ],

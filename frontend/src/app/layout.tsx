@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
 import { Nunito } from 'next/font/google';
-import '../../styles/global.css';
-
-export const metadata: Metadata = {
-  title: 'SchoolSync',
-  description: 'SchoolSync dashboard',
-};
+import './globals.css';
 
 const nunito = Nunito({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800', '900'],
   variable: '--font-nunito',
 });
+
+export const metadata: Metadata = {
+  title: 'SchoolSync',
+  description: 'School Management System',
+};
 
 export default function RootLayout({
   children,

@@ -1,13 +1,19 @@
 import Sidebar from "./Sidebar";
 import Header from "./header";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div>
+    <div className="dashboard-layout">
       <Sidebar />
-      <Header />
-      <div className="page-wrapper">
-        <div className="page-content">{children}</div>
+      <div className="dashboard-main">
+        <Header />
+        <div className="page-wrapper">
+          <div className="page-content">{children}</div>
+        </div>
       </div>
     </div>
   );
